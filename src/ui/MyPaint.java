@@ -61,7 +61,7 @@ public class MyPaint extends JFrame{
 		menu=createMenu(fileMenuTitle,"File");
 		menuBar.add(menu);
 		menu=createMenu(helpMenuTitle, "Help");
-		menu.add(menu);
+		menuBar.add(menu);
 		return menuBar;
 	}
 

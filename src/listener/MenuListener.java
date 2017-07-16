@@ -11,12 +11,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import shapes.Shape;
 import ui.MyPaint;
 import ui.PaintPanel;
 
 public class MenuListener implements ActionListener {
 
+	private static final String helpMessage = "Welcome to miniCAD!\n"
+			+ "You could draw lines, circles and rectangles.\n"
+			+ "For selected shape object, you could move it by mouse dragging,\n" + "change the stroke color,\n"
+			+ "and change the size and stroke width by:\n" + "keyboard 'W' - make it bigger;\n"
+			+ "keyboard 'S' - make it smaller;\n" + "keyboard 'A' - make the stroke thicker;\n"
+			+ "keyboard 'D' - make the stroke thinner;\n";
 	private MyPaint frame = null;
 	private PaintPanel paintPanel = null;
 	private String path = null;
@@ -25,7 +33,7 @@ public class MenuListener implements ActionListener {
 		this.frame = frame;
 		this.paintPanel = paintPanel;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New")) {
@@ -53,6 +61,8 @@ public class MenuListener implements ActionListener {
 			saveAsFile();
 		} else if (e.getActionCommand().equals("Quit")) {
 			System.exit(0);
+		} else if (e.getActionCommand().equals("About")) {
+			JOptionPane.showMessageDialog(null, helpMessage);
 		}
 	}
 
@@ -86,26 +96,26 @@ public class MenuListener implements ActionListener {
 	}
 
 	private void saveAsFile() {
-		FileDialog fileDialog=new FileDialog(frame, "Save", FileDialog.SAVE);
+		FileDialog fileDialog = new FileDialog(frame, "Save", FileDialog.SAVE);
 		fileDialog.setVisible(true);
-		String directory=fileDialog.getDirectory();
-		String fileName=fileDialog.getFile();
-		
-		if(directory!=null&&fileName!=null){
-			path=directory+fileName;
+		String directory = fileDialog.getDirectory();
+		String fileName = fileDialog.getFile();
+
+		if (directory != null && fileName != null) {
+			path = directory + fileName;
 			writeFile(path);
-			frame.setTitle(fileName+" - miniCAD");
+			frame.setTitle(fileName + " - miniCAD");
 		}
 	}
 
 	private void writeFile(String path) {
-		ObjectOutputStream oos=null;
-		ArrayList<Shape> listShape=null;
+		ObjectOutputStream oos = null;
+		ArrayList<Shape> listShape = null;
 		try {
-			oos=new ObjectOutputStream(new FileOutputStream(path));
-			listShape=paintPanel.getListShape();
+			oos = new ObjectOutputStream(new FileOutputStream(path));
+			listShape = paintPanel.getListShape();
 			oos.writeInt(listShape.size());
-			for(int i=0;i<listShape.size();i++){
+			for (int i = 0; i < listShape.size(); i++) {
 				oos.writeObject(listShape.get(i));
 			}
 			oos.flush();
