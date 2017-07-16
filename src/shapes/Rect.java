@@ -1,7 +1,9 @@
 package shapes;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class Rect extends Shape{
@@ -11,6 +13,7 @@ public class Rect extends Shape{
 	private int width;
 	private int height;
 	private Color strokeColor=Color.BLACK;
+	private float strokeWidth=1.0f;
 	
 	public Rect(int x, int y, int width, int height) {
 		this.x = x;
@@ -20,8 +23,10 @@ public class Rect extends Shape{
 	}
 	
 	public void draw(Graphics g) {
-		g.setColor(strokeColor);
-		g.drawRect(x, y, width, height);
+		Graphics2D g2d=(Graphics2D) g;
+		g2d.setStroke(new BasicStroke(strokeWidth));
+		g2d.setColor(strokeColor);
+		g2d.drawRect(x, y, width, height);
 	}
 
 	@Override
@@ -53,6 +58,16 @@ public class Rect extends Shape{
 			height-=10;
 		}
 	} 
+	
+	@Override
+	public void getThicker() {
+		strokeWidth+=1.0;
+	}
+
+	@Override
+	public void getThinner() {
+		if(strokeWidth>1) strokeWidth-=1.0;
+	}
 	
 	@Override
 	public void setStrokeColor(Color color) {

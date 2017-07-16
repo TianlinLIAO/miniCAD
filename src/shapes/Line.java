@@ -1,7 +1,9 @@
 package shapes;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class Line extends Shape{
@@ -11,6 +13,7 @@ public class Line extends Shape{
 	private int x2;
 	private int y2;
 	private Color strokeColor=Color.BLACK;
+	private float strokeWidth=1.0f;
 	
 	public Line(int x1, int y1, int x2, int y2)
 	{
@@ -20,8 +23,10 @@ public class Line extends Shape{
 	
 	@Override
 	public void draw(Graphics g) {
-		g.setColor(strokeColor);
-		g.drawLine(x1, y1, x2, y2);
+		Graphics2D g2d=(Graphics2D) g;
+		g2d.setStroke(new BasicStroke(strokeWidth));
+		g2d.setColor(strokeColor);
+		g2d.drawLine(x1, y1, x2, y2);
 	}
 
 	@Override
@@ -59,8 +64,18 @@ public class Line extends Shape{
 	}
 	
 	@Override
+	public void getThicker() {
+		strokeWidth+=1.0;
+	}
+
+	@Override
+	public void getThinner() {
+		if(strokeWidth>1) strokeWidth-=1.0;
+	}
+	
+	@Override
 	public void setStrokeColor(Color color) {
 		strokeColor = color;
 	}
-	
+
 }

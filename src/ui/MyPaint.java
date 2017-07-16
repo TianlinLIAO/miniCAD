@@ -29,8 +29,6 @@ public class MyPaint extends JFrame{
 		paintPanel.addMouseListener(paintListener);
 		paintPanel.addMouseMotionListener(paintListener);
 		
-//		keyBinding=new KeyBindings();
-//		container.add(keyBinding);
 		container.setLayout(new BorderLayout());
 		container.add(createShapeToolBar(), BorderLayout.NORTH);
 		container.add(paintPanel, BorderLayout.CENTER);

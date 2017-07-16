@@ -40,8 +40,7 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 	private int x1, y1, x2, y2;
 	private int lastX, lastY;
 	private int newX1, newY1, newX2, newY2;
-	private Shape currenShape;
-	private Shape selected = null;
+	private Shape currenShape=null;
 	private boolean drawingMode = false;
 
 	public PaintListener(JPanel panel) {
@@ -75,17 +74,20 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (selected != null) {
+			if(drawingMode) return;
+			if (currenShape != null) {
 				if (cmd.equals("变大")) {
-					selected.getBigger();
+					currenShape.getBigger();
 					((PaintPanel) paintPanel).repaint();
 				} else if (cmd.equals("变小")) {
-					selected.getSmaller();
+					currenShape.getSmaller();
 					((PaintPanel) paintPanel).repaint();
 				} else if (cmd.equals("变粗")) {
-
+					currenShape.getThicker();
+					((PaintPanel) paintPanel).repaint();
 				} else if (cmd.equals("变细")) {
-
+					currenShape.getThinner();
+					((PaintPanel) paintPanel).repaint();
 				}
 			}
 
@@ -106,8 +108,8 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 			drawingMode = true;
 		} else if (e.getActionCommand().equals("颜色")) {
 			Color color = JColorChooser.showDialog(null, "Choose a color", Color.BLACK);
-			if (color != null && selected != null) {
-				selected.setStrokeColor(color);
+			if (color != null && currenShape != null) {
+				currenShape.setStrokeColor(color);
 				System.out.println("color is:" + color.toString());
 				((PaintPanel) paintPanel).repaint();
 			}
@@ -122,7 +124,7 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 		if (!drawingMode) {
 			for (Shape shape : shapes) {
 				if (shape.containsPoint(x1, y1)) {
-					selected = shape;
+					currenShape = shape;
 					lastX = x1;
 					lastY = y1;
 					System.out.println("selected");
@@ -140,8 +142,8 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 		y2 = e.getY();
 
 		if (!drawingMode) {
-			if(selected!=null){
-				selected.setLocation(x2 - lastX, y2 - lastY);
+			if(currenShape!=null){
+				currenShape.setLocation(x2 - lastX, y2 - lastY);
 				lastX = x2;
 				lastY = y2;
 				((PaintPanel) paintPanel).repaint();
@@ -173,10 +175,7 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 			}
 			drawingMode=false;
 		}
-		else {
-			
-		}
-		
+
 		((PaintPanel) paintPanel).repaint();
 		System.out.println("mouse released");
 	}

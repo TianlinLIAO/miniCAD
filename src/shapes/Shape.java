@@ -18,6 +18,10 @@ public abstract class Shape {
 	
 	public abstract void getSmaller();
 	
+	public abstract void getThicker();
+	
+	public abstract void getThinner();
+	
 	public abstract void setStrokeColor(Color color);
 	
 }
