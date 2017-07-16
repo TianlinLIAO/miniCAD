@@ -39,5 +39,10 @@ public class PaintPanel extends JPanel{
 	public void setShape(Shape shape) {
 		this.shape = shape;
 	}
+
+	public void clearPaint() {
+		listShape.clear();
+		shape=null;
+	}
 	
 }

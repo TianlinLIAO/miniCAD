@@ -27,20 +27,20 @@ import shapes.Rect;
 import shapes.Shape;
 import ui.PaintPanel;
 
-public class PaintListener extends MouseAdapter implements ActionListener, MouseMotionListener, MouseWheelListener {
+public class PaintListener extends MouseAdapter implements ActionListener, MouseMotionListener {
 
 	private static final int LINE = 1;
 	private static final int CIRCLE = 2;
 	private static final int RECT = 3;
+	private static int shapeToPaint = -1;
 
 	private JPanel paintPanel = null;
 	private ArrayList<Shape> shapes = null;
 
-	private static int shapeToPaint = -1;
 	private int x1, y1, x2, y2;
 	private int lastX, lastY;
-	private int newX1, newY1, newX2, newY2;
-	private Shape currenShape=null;
+
+	private Shape currentShape = null;
 	private boolean drawingMode = false;
 
 	public PaintListener(JPanel panel) {
@@ -53,19 +53,20 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 		InputMap inputMap = paintPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = paintPanel.getActionMap();
 
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "变大");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "变小");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "变粗");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "变细");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "Bigger");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "Smaller");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "Thicker");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "Thinner");
 
-		actionMap.put("变大", new KeyAction("变大"));
-		actionMap.put("变小", new KeyAction("变小"));
-		actionMap.put("变粗", new KeyAction("变粗"));
-		actionMap.put("变细", new KeyAction("变细"));
+		actionMap.put("Bigger", new KeyAction("Bigger"));
+		actionMap.put("Smaller", new KeyAction("Smaller"));
+		actionMap.put("Thicker", new KeyAction("Thicker"));
+		actionMap.put("Thinner", new KeyAction("Thinner"));
 	}
 
 	public class KeyAction extends AbstractAction {
 
+		private static final long serialVersionUID = 1L;
 		private String cmd;
 
 		public KeyAction(String cmd) {
@@ -74,42 +75,42 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(drawingMode) return;
-			if (currenShape != null) {
-				if (cmd.equals("变大")) {
-					currenShape.getBigger();
+			if (drawingMode)
+				return;
+			if (currentShape != null) {
+				if (cmd.equals("Bigger")) {
+					currentShape.getBigger();
 					((PaintPanel) paintPanel).repaint();
-				} else if (cmd.equals("变小")) {
-					currenShape.getSmaller();
+				} else if (cmd.equals("Smaller")) {
+					currentShape.getSmaller();
 					((PaintPanel) paintPanel).repaint();
-				} else if (cmd.equals("变粗")) {
-					currenShape.getThicker();
+				} else if (cmd.equals("Thicker")) {
+					currentShape.getThicker();
 					((PaintPanel) paintPanel).repaint();
-				} else if (cmd.equals("变细")) {
-					currenShape.getThinner();
+				} else if (cmd.equals("Thinner")) {
+					currentShape.getThinner();
 					((PaintPanel) paintPanel).repaint();
 				}
 			}
-
 		}
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("直线")) {
+		if (e.getActionCommand().equals("Line")) {
 			shapeToPaint = LINE;
 			drawingMode = true;
-		} else if (e.getActionCommand().equals("圆")) {
+		} else if (e.getActionCommand().equals("Circle")) {
 			shapeToPaint = CIRCLE;
 			drawingMode = true;
-		} else if (e.getActionCommand().equals("矩形")) {
+		} else if (e.getActionCommand().equals("Rectangle")) {
 			shapeToPaint = RECT;
 			drawingMode = true;
-		} else if (e.getActionCommand().equals("颜色")) {
+		} else if (e.getActionCommand().equals("Color")) {
 			Color color = JColorChooser.showDialog(null, "Choose a color", Color.BLACK);
-			if (color != null && currenShape != null) {
-				currenShape.setStrokeColor(color);
+			if (color != null && currentShape != null) {
+				currentShape.setStrokeColor(color);
 				System.out.println("color is:" + color.toString());
 				((PaintPanel) paintPanel).repaint();
 			}
@@ -124,7 +125,7 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 		if (!drawingMode) {
 			for (Shape shape : shapes) {
 				if (shape.containsPoint(x1, y1)) {
-					currenShape = shape;
+					currentShape = shape;
 					lastX = x1;
 					lastY = y1;
 					System.out.println("selected");
@@ -142,8 +143,8 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 		y2 = e.getY();
 
 		if (!drawingMode) {
-			if(currenShape!=null){
-				currenShape.setLocation(x2 - lastX, y2 - lastY);
+			if (currentShape != null) {
+				currentShape.setLocation(x2 - lastX, y2 - lastY);
 				lastX = x2;
 				lastY = y2;
 				((PaintPanel) paintPanel).repaint();
@@ -152,48 +153,33 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 
 		else {
 			if (shapeToPaint == LINE) {
-				currenShape = new Line(x1, y1, x2, y2);
+				currentShape = new Line(x1, y1, x2, y2);
 			} else if (shapeToPaint == CIRCLE) {
-				currenShape = new Circle(x1, y1, Math.abs(x2 - x1));
+				currentShape = new Circle(x1, y1, Math.abs(x2 - x1));
 			} else if (shapeToPaint == RECT) {
-				currenShape = new Rect(x1, y1, x2 - x1, y2 - y1);
+				currentShape = new Rect(x1, y1, Math.abs(x2 - x1), Math.abs(y2 - y1));
 			}
 
-			((PaintPanel) paintPanel).setShape(currenShape);
+			((PaintPanel) paintPanel).setShape(currentShape);
 			((PaintPanel) paintPanel).repaint();
 		}
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (drawingMode) {
-			if(currenShape!=null){
-				((PaintPanel) paintPanel).addShape(currenShape);
-				((PaintPanel) paintPanel).setShape(currenShape);
+			if (currentShape != null) {
+				((PaintPanel) paintPanel).addShape(currentShape);
+				((PaintPanel) paintPanel).setShape(currentShape);
 				((PaintPanel) paintPanel).repaint();
 			}
-			drawingMode=false;
+			drawingMode = false;
 		}
 
 		((PaintPanel) paintPanel).repaint();
+		
 		System.out.println("mouse released");
 	}
-
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		int notches = e.getWheelRotation();
-		// if(selected!=null){
-		if (notches < 0) {
-			System.out.println("move up");
-			// selected.getBigger();
-			// ((PaintPanel) paintPanel).repaint();
-		} else {
-			System.out.println("move down");
-			// selected.getSmaller();
-			// ((PaintPanel) paintPanel).repaint();
-		}
-		// }
-
-	}
+	
 }

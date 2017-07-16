@@ -5,8 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Rect extends Shape{
+public class Rect extends Shape implements Serializable{
 
 	private int x;
 	private int y;
