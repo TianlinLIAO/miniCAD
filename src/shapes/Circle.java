@@ -42,13 +42,13 @@ public class Circle extends Shape{
 
 	@Override
 	public void getBigger() {
-		radius++;
+		radius+=10;
 	}
 
 	@Override
 	public void getSmaller() {
-		if(radius>1)
-			radius--;
+		if(radius>10)
+			radius-=10;
 	}
 	
 	@Override

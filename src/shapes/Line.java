@@ -44,18 +44,18 @@ public class Line extends Shape{
 
 	@Override
 	public void getBigger() {
-		x1--;
-		y1--;
-		x2++;
-		y2++;
+		x1-=10;
+		y1-=10;
+		x2+=10;
+		y2+=10;
 	}
 
 	@Override
 	public void getSmaller() {
-		x1++;
-		y1++;
-		x2--;
-		y2--;
+		x1+=10;
+		y1+=10;
+		x2-=10;
+		y2-=10;
 	}
 	
 	@Override

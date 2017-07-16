@@ -42,15 +42,15 @@ public class Rect extends Shape{
 
 	@Override
 	public void getBigger() {
-		width++;
-		height++;
+		width+=10;
+		height+=10;
 	}
 
 	@Override
 	public void getSmaller() {
-		if(width>1&&height>1){
-			width--;
-			height--;
+		if(width>10&&height>10){
+			width-=10;
+			height-=10;
 		}
 	} 
 	
