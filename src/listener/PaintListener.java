@@ -18,6 +18,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -25,6 +26,7 @@ import shapes.Circle;
 import shapes.Line;
 import shapes.Rect;
 import shapes.Shape;
+import shapes.Text;
 import ui.PaintPanel;
 
 public class PaintListener extends MouseAdapter implements ActionListener, MouseMotionListener {
@@ -32,6 +34,7 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 	private static final int LINE = 1;
 	private static final int CIRCLE = 2;
 	private static final int RECT = 3;
+	private static final int TEXT = 4;
 	private static int shapeToPaint = -1;
 
 	private JPanel paintPanel = null;
@@ -42,6 +45,7 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 
 	private Shape currentShape = null;
 	private boolean drawingMode = false;
+	private String text = null;
 
 	public PaintListener(JPanel panel) {
 		this.paintPanel = panel;
@@ -107,6 +111,10 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 		} else if (e.getActionCommand().equals("Rectangle")) {
 			shapeToPaint = RECT;
 			drawingMode = true;
+		} else if (e.getActionCommand().equals("Text")) {
+			text = JOptionPane.showInputDialog("Enter the text");
+			shapeToPaint = TEXT;
+			drawingMode = true;
 		} else if (e.getActionCommand().equals("Color")) {
 			Color color = JColorChooser.showDialog(null, "Choose a color", Color.BLACK);
 			if (color != null && currentShape != null) {
@@ -158,6 +166,8 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 				currentShape = new Circle(x1, y1, Math.abs(x2 - x1));
 			} else if (shapeToPaint == RECT) {
 				currentShape = new Rect(x1, y1, Math.abs(x2 - x1), Math.abs(y2 - y1));
+			} else if (shapeToPaint == TEXT) {
+				currentShape = new Text(x1, y1, text);
 			}
 
 			((PaintPanel) paintPanel).setShape(currentShape);
@@ -178,8 +188,8 @@ public class PaintListener extends MouseAdapter implements ActionListener, Mouse
 		}
 
 		((PaintPanel) paintPanel).repaint();
-		
+
 		System.out.println("mouse released");
 	}
-	
+
 }

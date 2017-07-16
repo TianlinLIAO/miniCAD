@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
@@ -84,7 +85,7 @@ public class MyPaint extends JFrame{
 	}
 
 	private Component createShapeToolBar() {
-		String[] paintTitle={"Line","Circle","Rectangle","Color"};
+		String[] paintTitle={"Line","Circle","Rectangle","Text","Color"};
 		JToolBar toolBar=new JToolBar();
 		JButton button=null;
 		for(int i=0;i<paintTitle.length;i++){
