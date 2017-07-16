@@ -12,14 +12,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import listener.KeyBindings;
 import listener.PaintListener;
 
 public class MyPaint extends JFrame{
 
 	private JPanel paintPanel=null;
 	private PaintListener paintListener=null;
-	private KeyBindings keyBinding=null;
 	
 	public MyPaint(String title){
 		this.setTitle(title);
