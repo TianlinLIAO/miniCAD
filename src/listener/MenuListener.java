@@ -14,17 +14,12 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import shapes.Shape;
+import ui.HelpMessageDialog;
 import ui.MyPaint;
 import ui.PaintPanel;
 
 public class MenuListener implements ActionListener {
 
-	private static final String helpMessage = "Welcome to miniCAD!\n"
-			+ "You could draw lines, circles and rectangles.\n"
-			+ "For selected shape object, you could move it by mouse dragging,\n" + "change the stroke color,\n"
-			+ "and change the size and stroke width by:\n" + "keyboard 'W' - make it bigger;\n"
-			+ "keyboard 'S' - make it smaller;\n" + "keyboard 'A' - make the stroke thicker;\n"
-			+ "keyboard 'D' - make the stroke thinner;\n";
 	private MyPaint frame = null;
 	private PaintPanel paintPanel = null;
 	private String path = null;
@@ -62,7 +57,7 @@ public class MenuListener implements ActionListener {
 		} else if (e.getActionCommand().equals("Quit")) {
 			System.exit(0);
 		} else if (e.getActionCommand().equals("About")) {
-			JOptionPane.showMessageDialog(null, helpMessage);
+			new HelpMessageDialog(frame).setVisible(true);
 		}
 	}
 
